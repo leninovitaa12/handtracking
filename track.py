@@ -7,7 +7,6 @@ import os
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
-# Membuat direktori 'Output' jika belum ada
 if not os.path.exists('Output'):
     os.makedirs('Output')
 
@@ -19,22 +18,19 @@ with mp_hands.Hands(min_detection_confidence=0.8, min_tracking_confidence=0.5) a
         if not ret:
             break
 
-        # Konversi frame dari BGR ke RGB
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         # Flip horizontal
         image = cv2.flip(image, 1)
 
-        # Tandai frame sebagai tidak bisa ditulis untuk meningkatkan kinerja
+        # flag
         image.flags.writeable = False
 
-        # Proses deteksi tangan
+        # Detection
         results = hands.process(image)
 
-        # Tandai frame sebagai bisa ditulis kembali
         image.flags.writeable = True
 
-        # Konversi kembali frame dari RGB ke BGR
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
         # RENDERING
@@ -45,13 +41,12 @@ with mp_hands.Hands(min_detection_confidence=0.8, min_tracking_confidence=0.5) a
                     mp_drawing.DrawingSpec(color=(121, 22, 76), thickness=2, circle_radius=4),
                     mp_drawing.DrawingSpec(color=(12, 44, 250), thickness=2, circle_radius=2))
 
-        # Tampilkan frame dengan landmark tangan
         cv2.imshow('Hand Tracking', image)
 
         if cv2.waitKey(10) & 0xFF == ord('q'):
             break
 
-        # Simpan gambar
+        # Save image
         cv2.imwrite(
             os.path.join('Output', '{}.jpg'.format(uuid.uuid1())),
             image
