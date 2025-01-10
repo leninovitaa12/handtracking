@@ -46,13 +46,13 @@ with mp_hands.Hands(min_detection_confidence=0.8, min_tracking_confidence=0.5) a
                                           )
 
 
-        # Tampilkan frame dengan landmark tangan
+        # frame
         cv2.imshow('Hand Tracking', image)
 
         if cv2.waitKey(10) & 0xFF == ord('q'):
             break
 
-        # Simpan gambar
+        # save image
         cv2.imwrite(
             os.path.join('Output', '{}.jpg'.format(uuid.uuid1())),
             image
